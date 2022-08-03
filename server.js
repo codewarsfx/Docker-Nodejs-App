@@ -1,11 +1,14 @@
 let express = require('express');
+let dotenv = require('dotenv').config();
 let path = require('path');
 let fs = require('fs');
 let MongoClient = require('mongodb').MongoClient;
 let bodyParser = require('body-parser');
 let app = express();
 const cors = require('cors');
-app.use(cors())
+
+  
+  app.use(cors());
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -24,7 +27,7 @@ app.get('/profile-picture', function (req, res) {
 });
 
 // use when starting application locally
-let mongoUrlLocal = "mongodb://admin:password@localhost:27017";
+let mongoUrlLocal = "mongodb://codewarsfx:1234@localhost:27017";
 
 // use when starting application as docker container
 let mongoUrlDocker = "mongodb://admin:password@mongodb";
@@ -34,6 +37,8 @@ let mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 // "user-account" in demo with docker. "my-db" in demo with docker-compose
 let databaseName = "my-db";
+
+
 
 app.post('/update-profile', function (req, res) {
   let userObj = req.body;
@@ -58,6 +63,7 @@ app.post('/update-profile', function (req, res) {
 });
 
 app.get('/get-profile', function (req, res) {
+ 
   let response = {};
   // Connect to the db
   MongoClient.connect(mongoUrlLocal, mongoClientOptions, function (err, client) {
@@ -71,9 +77,9 @@ app.get('/get-profile', function (req, res) {
       if (err) throw err;
       response = result;
       client.close();
-
       // Send response
       res.send(response ? response : {});
+  
     });
   });
 });
